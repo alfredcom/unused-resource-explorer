@@ -17,6 +17,12 @@ public class UREToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         mToolWindow = toolWindow;
+
+        DefaultListModel listModel = new DefaultListModel();
+        listModel.addElement(new UREImage("img1", "/path/path0"));
+        mResouceList.setModel(listModel);
+        mResouceList.setCellRenderer(new UREImageRender());
+
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(mToolWindowPanel, "", false);
         toolWindow.getContentManager().addContent(content);
