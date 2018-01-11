@@ -6,6 +6,7 @@ import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.GridLayout
 import java.awt.event.ActionEvent
+import java.awt.event.KeyEvent
 import javax.swing.*
 
 
@@ -13,7 +14,7 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
     private val icon = JLabel()
     private val name = JLabel()
     private val path = JLabel()
-    private val delBtn = JButton()
+//    private val delBtn = JButton()
 
     init {
         val panelText = JPanel(GridLayout(0, 1))
@@ -22,11 +23,13 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
         add(icon, BorderLayout.WEST)
         add(panelText, BorderLayout.CENTER)
 
-        delBtn.text = "delete"
-        delBtn.addActionListener({e: ActionEvent? ->
-            Messages.showOkCancelDialog("Delete the file?", "Ask", null)
-        })
-        add(delBtn, BorderLayout.EAST)
+        setAlignmentX(Component.LEFT_ALIGNMENT)
+//        delBtn.text = "delete"
+//        delBtn.addActionListener({e: ActionEvent? ->
+//            println("Delete click")
+//        })
+//        delBtn.setMnemonic(KeyEvent.VK_D)
+//        add(delBtn, BorderLayout.EAST)
     }
 
     override fun getListCellRendererComponent(list: JList<out UREImage>?, value: UREImage?, index: Int,
