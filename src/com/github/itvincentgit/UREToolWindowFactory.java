@@ -34,7 +34,7 @@ public class UREToolWindowFactory implements ToolWindowFactory {
         mResouceList.setCellRenderer(new UREImageRender());
 
 
-        mDelBtn.addActionListener(e -> Messages.showOkCancelDialog("Delete these files?", "Ask", null));
+        mDelBtn.addActionListener(e -> Messages.showOkCancelDialog("Delete these files?", "Ask", Messages.getQuestionIcon()));
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(mToolWindowPanel, "", false);
