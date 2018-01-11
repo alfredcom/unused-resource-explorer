@@ -1,5 +1,6 @@
-package com.github.itvincentgit
+package com.github.itvincentgit.ure.plugin
 
+import com.github.itvincentgit.ure.plugin.UREImage
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Component

@@ -30,9 +30,6 @@
 
   <actions>
     <!-- Add your actions here -->
-    <!--<action id="hello.action" class="com.github.itvincentgit.HelloAction" text="HelloAction" description="say hello">-->
-      <!--<add-to-group group-id="HelpMenu" anchor="first"/>-->
-    <!--</action>-->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -40,6 +37,6 @@
                 secondary="true"
                 icon="/images/icon1.png"
                 anchor="right"
-                factoryClass="com.github.itvincentgit.UREToolWindowFactory"/>
+                factoryClass="com.github.itvincentgit.ure.plugin.UREToolWindowFactory"/>
   </extensions>
 </idea-plugin>

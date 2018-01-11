@@ -1,5 +1,7 @@
-package com.github.itvincentgit;
+package com.github.itvincentgit.ure.plugin;
 
+import com.github.itvincentgit.ure.plugin.UREImage;
+import com.github.itvincentgit.ure.plugin.UREImageRender;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
@@ -10,11 +12,6 @@ import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class UREToolWindowFactory implements ToolWindowFactory {
     private JBList mResouceList;
