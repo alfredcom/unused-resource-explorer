@@ -33,17 +33,23 @@ public class UREToolWindowFactory implements ToolWindowFactory {
             parser.parse();
             parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));
         } catch (Exception e) {
+            e.printStackTrace();
             Messages.showInfoMessage(e.getMessage(), "Xml parse error");
         }
 
-        listModel.addElement(new UREImage("img1", "/path/path1"));
-        listModel.addElement(new UREImage("img2", "/path/path2"));
+        //listModel.addElement(new UREImage("img1", "/path/path1"));
+        //listModel.addElement(new UREImage("img2", "/path/path2"));
         mResouceList.setModel(listModel);
         mResouceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         mResouceList.setCellRenderer(new UREImageRender());
 
 
-        mDelBtn.addActionListener(e -> Messages.showOkCancelDialog("Delete these files?", "Ask", Messages.getQuestionIcon()));
+        mDelBtn.addActionListener(e -> {
+                //Messages.showOkCancelDialog("Delete these files?", "Ask", Messages.getQuestionIcon())
+            mResouceList.getSelectedValuesList().stream().forEach(o -> {
+
+            });
+        });
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(mToolWindowPanel, "", false);

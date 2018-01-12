@@ -19,24 +19,35 @@ class LintXmlParser(val file: File) {
         xmlPullParser.setInput(FileReader(file))
 
         var eventType = xmlPullParser.getEventType()
+        var id = ""
 
         while(eventType != XmlPullParser.END_DOCUMENT){
             val nodeName = xmlPullParser.getName()
             when (eventType){
                 XmlPullParser.START_DOCUMENT -> {}
                 XmlPullParser.START_TAG -> {
+                    println("START_TAG $nodeName")
                     if (nodeName == "issue") {
-                        var id = xmlPullParser.getAttributeValue(null, "id")
+                        id = xmlPullParser.getAttributeValue(null, "id")
                         println("id = " + id)
                         if (id == "UnusedResources") {
                             unusedImages = ArrayList<UREImage>()
                         }
                     } else if (nodeName == "location") {
                         var filePath = xmlPullParser.getAttributeValue(null, "file")
+                        println("filePath = " + filePath)
                         unusedImages?.add(UREImage(getFileName(filePath), filePath))
                     }
                 }
-                XmlPullParser.END_TAG -> {}
+                XmlPullParser.END_TAG -> {
+                    println("END_TAG $nodeName $id")
+                    if (nodeName == "issue") {
+                        if (id == "UnusedResources") {
+                            return
+                        }
+                    }
+                }
+                XmlPullParser.TEXT -> {}
             }
             eventType = xmlPullParser.next();
         }
