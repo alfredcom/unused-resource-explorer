@@ -1,5 +1,6 @@
 package com.github.itvincentgit.ure.plugin;
 
+import com.github.itvincentgit.ure.lint.LintXmlParser;
 import com.github.itvincentgit.ure.plugin.UREImage;
 import com.github.itvincentgit.ure.plugin.UREImageRender;
 import com.intellij.openapi.project.Project;
@@ -12,6 +13,8 @@ import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.io.File;
+import java.util.stream.Stream;
 
 public class UREToolWindowFactory implements ToolWindowFactory {
     private JBList mResouceList;
@@ -24,6 +27,15 @@ public class UREToolWindowFactory implements ToolWindowFactory {
         mToolWindow = toolWindow;
 
         DefaultListModel listModel = new DefaultListModel();
+        try {
+            LintXmlParser parser = new LintXmlParser(
+                    new File(getClass().getResource("/test/lint-results-debug.xml").getPath()));
+            parser.parse();
+            parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));
+        } catch (Exception e) {
+            Messages.showInfoMessage(e.getMessage(), "Xml parse error");
+        }
+
         listModel.addElement(new UREImage("img1", "/path/path1"));
         listModel.addElement(new UREImage("img2", "/path/path2"));
         mResouceList.setModel(listModel);
