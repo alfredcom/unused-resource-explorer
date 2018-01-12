@@ -1,10 +1,11 @@
 package com.github.itvincentgit.ure.plugin
 
-import com.github.itvincentgit.ure.plugin.UREImage
-import java.awt.BorderLayout
-import java.awt.Color
-import java.awt.Component
-import java.awt.GridLayout
+import com.intellij.util.ui.UIUtil
+import java.awt.*
+import java.awt.RenderingHints
+import java.awt.image.BufferedImage
+import java.io.FileInputStream
+import javax.imageio.ImageIO
 import javax.swing.*
 
 
@@ -19,12 +20,12 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
         panelText.add(path)
         add(icon, BorderLayout.WEST)
         add(panelText, BorderLayout.CENTER)
-
     }
 
     override fun getListCellRendererComponent(list: JList<out UREImage>?, value: UREImage?, index: Int,
                                               isSelected: Boolean, cellHasFocus: Boolean): Component {
-        icon.icon = ImageIcon(value?.path)
+        value?.let { icon.icon = ImageIcon(getScaledImage(it.path, 50, 50)) }
+
         icon.isOpaque = true
         value.let {
             name.text = it?.name
@@ -46,5 +47,19 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
             background = list?.background
         }
         return this
+    }
+
+    // 取到缩放后的图
+    private fun getScaledImage(path: String, w: Int, h: Int): Image {
+        val srcImg = ImageIO.read(FileInputStream(path))
+
+        val resizedImg = UIUtil.createImage(w, h, BufferedImage.TYPE_INT_ARGB)
+        val g2 = resizedImg.createGraphics()
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
+        g2.drawImage(srcImg, 0, 0, w, h, null)
+        g2.dispose()
+
+        return resizedImg
     }
 }
