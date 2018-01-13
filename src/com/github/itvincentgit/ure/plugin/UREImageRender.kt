@@ -26,7 +26,14 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
 
     override fun getListCellRendererComponent(list: JList<out UREImage>?, value: UREImage?, index: Int,
                                               isSelected: Boolean, cellHasFocus: Boolean): Component {
-        value?.let { icon.icon = ImageIcon(getScaledImage(it.path, 50, 50)) }
+        value?.let {
+            if (it.path.endsWith(".png") && it.path.endsWith(".jpg")) {
+                try {
+                    icon.icon = ImageIcon(getScaledImage(it.path, 50, 50))
+                } catch (e: Exception) {
+                }
+            }
+        }
 
         icon.isOpaque = true
         value.let {
