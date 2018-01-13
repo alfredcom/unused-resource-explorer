@@ -33,7 +33,7 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="unused-resource-explorer"
+    <toolWindow id="Unused Resource Explorer"
                 secondary="true"
                 icon="/images/icon1.png"
                 anchor="right"
