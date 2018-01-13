@@ -15,39 +15,38 @@ class LintXmlParser(val file: File) {
 
     val factory = XmlPullParserFactory.newInstance()
     val xmlPullParser = factory.newPullParser()
-    var unusedImages:ArrayList<UREImage>? = null
+    var unusedImages:ArrayList<UREImage> = ArrayList<UREImage>()
 
     fun parse() {
 
         xmlPullParser.setInput(FileReader(file))
 
         var eventType = xmlPullParser.getEventType()
-        var id = ""
+        var inUnusedResources = false
 
         while(eventType != XmlPullParser.END_DOCUMENT){
             val nodeName = xmlPullParser.getName()
+
             when (eventType){
                 XmlPullParser.START_DOCUMENT -> {}
                 XmlPullParser.START_TAG -> {
                     println("START_TAG $nodeName")
+                    var id = xmlPullParser.getAttributeValue(null, "id")
                     if (nodeName == "issue") {
-                        id = xmlPullParser.getAttributeValue(null, "id")
                         println("id = " + id)
                         if (id == "UnusedResources") {
-                            unusedImages = ArrayList<UREImage>()
+                            inUnusedResources = true
                         }
-                    } else if (nodeName == "location") {
+                    } else if (nodeName == "location" && inUnusedResources) {
                         var filePath = xmlPullParser.getAttributeValue(null, "file")
                         println("filePath = " + filePath)
                         unusedImages?.add(UREImage(getFileName(filePath), filePath))
                     }
                 }
                 XmlPullParser.END_TAG -> {
-                    println("END_TAG $nodeName $id")
+                    println("END_TAG $nodeName")
                     if (nodeName == "issue") {
-                        if (id == "UnusedResources") {
-                            return
-                        }
+                        inUnusedResources = false
                     }
                 }
                 XmlPullParser.TEXT -> {}
