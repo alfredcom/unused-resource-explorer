@@ -2,6 +2,7 @@ package com.github.itvincentgit.ure.plugin;
 
 import com.github.itvincentgit.ure.lint.LintXmlParser;
 import com.github.itvincentgit.ure.util.ErrorUtil;
+import com.github.itvincentgit.ure.util.SysUtil;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.Result;
@@ -97,7 +98,8 @@ public class UREToolWindowFactory implements ToolWindowFactory {
                 String path = ((UREImage) o).getPath();
                 System.out.println("Open file: " + path);
                 try {
-                    Runtime.getRuntime().exec("explorer.exe " + path);
+                    if (SysUtil.INSTANCE.isWindow())
+                        Runtime.getRuntime().exec("explorer.exe " + path);
                 } catch (Exception e1) {
                     ErrorUtil.INSTANCE.showError(e1);
                 }

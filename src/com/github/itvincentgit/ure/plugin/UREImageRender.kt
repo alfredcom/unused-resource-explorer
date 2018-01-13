@@ -27,7 +27,7 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
     override fun getListCellRendererComponent(list: JList<out UREImage>?, value: UREImage?, index: Int,
                                               isSelected: Boolean, cellHasFocus: Boolean): Component {
         value?.let {
-            if (it.path.endsWith(".png") && it.path.endsWith(".jpg")) {
+            if (it.isImage()) {
                 try {
                     icon.icon = ImageIcon(getScaledImage(it.path, 50, 50))
                 } catch (e: Exception) {
