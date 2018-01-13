@@ -4,6 +4,8 @@ import com.github.itvincentgit.ure.lint.LintXmlParser;
 import com.github.itvincentgit.ure.util.ErrorUtil;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.Result;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
@@ -31,6 +33,7 @@ public class UREToolWindowFactory implements ToolWindowFactory {
     private JPanel mToolWindowPanel;
     private JButton mDelBtn;
     private JButton chooseLintReportButton;
+    private JButton mOpenBtn;
     private ToolWindow mToolWindow;
 
     @Override
@@ -40,13 +43,14 @@ public class UREToolWindowFactory implements ToolWindowFactory {
         mDelBtn.addActionListener(e -> {
                 //Messages.showOkCancelDialog("Delete these files?", "Ask", Messages.getQuestionIcon())
             mResouceList.getSelectedValuesList().stream().forEach(o -> {
-                try {
-                    String path = ((UREImage) o).getPath();
-                    System.out.println("del file: " + path);
-                    File f = new File(path);
-                    if (f.exists()) {
-                        Application app = ApplicationManager.getApplication();
-                        app.executeOnPooledThread(()-> {
+                //删除列表选择的文件
+                String path = ((UREImage) o).getPath();
+                System.out.println("del file: " + path);
+                File f = new File(path);
+                ApplicationManager.getApplication().invokeLater(() -> new WriteCommandAction(project) {
+                    @Override
+                    protected void run(@NotNull Result result) throws Throwable {
+                        try {
                             VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(f);
                             try {
                                 virtualFile.delete(UREToolWindowFactory.this);
@@ -55,14 +59,13 @@ public class UREToolWindowFactory implements ToolWindowFactory {
                             }
 //                            boolean result = f.delete();
 //                            System.out.println("result = " + result);
-                        });
-                        //Process exec = Runtime.getRuntime().exec("del " + path);
 
-
+//                            Process exec = Runtime.getRuntime().exec("del " + path);
+                        } catch (Exception e1) {
+                            ErrorUtil.INSTANCE.showError(e1);
+                        }
                     }
-                } catch (Exception e1) {
-                    ErrorUtil.INSTANCE.showError(e1);
-                }
+                }.execute());
             });
         });
 
@@ -85,6 +88,19 @@ public class UREToolWindowFactory implements ToolWindowFactory {
                 mResouceList.setModel(listModel);
                 mResouceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
                 mResouceList.setCellRenderer(new UREImageRender());
+            });
+        });
+
+        mOpenBtn.addActionListener(e -> {
+            mResouceList.getSelectedValuesList().stream().forEach(o -> {
+                //打开列表选择的文件
+                String path = ((UREImage) o).getPath();
+                System.out.println("Open file: " + path);
+                try {
+                    Runtime.getRuntime().exec("explorer.exe " + path);
+                } catch (Exception e1) {
+                    ErrorUtil.INSTANCE.showError(e1);
+                }
             });
         });
 
