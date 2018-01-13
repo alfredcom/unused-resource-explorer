@@ -66,25 +66,25 @@ public class UREToolWindowFactory implements ToolWindowFactory {
             });
         });
 
+        //点击按钮选择lint.xml文件
         chooseLintReportButton.addActionListener(e -> {
             FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor("xml");
-            FileChooser.chooseFiles(descriptor, project, null, new Consumer<List<VirtualFile>>() {
-                @Override
-                public void consume(List<VirtualFile> virtualFiles) {
-                    System.out.println("choose file " + virtualFiles);
-                    DefaultListModel listModel = new DefaultListModel();
-                    try {
-                        LintXmlParser parser = new LintXmlParser(
-                                new File(virtualFiles.get(0).getPath()));
-                        parser.parse();
-                        parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));
-                    } catch (Exception e) {
-                        ErrorUtil.INSTANCE.showError(e);
-                    }
-                    mResouceList.setModel(listModel);
-                    mResouceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-                    mResouceList.setCellRenderer(new UREImageRender());
+            FileChooser.chooseFiles(descriptor, project, null, virtualFiles -> {
+                System.out.println("choose file " + virtualFiles);
+                DefaultListModel listModel = new DefaultListModel();
+                //选择一个文件来解析
+                try {
+                    LintXmlParser parser = new LintXmlParser(
+                            new File(virtualFiles.get(0).getPath()));
+                    parser.parse();
+                    parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));
+                } catch (Exception e12) {
+                    ErrorUtil.INSTANCE.showError(e12);
                 }
+                //显示在列表上
+                mResouceList.setModel(listModel);
+                mResouceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+                mResouceList.setCellRenderer(new UREImageRender());
             });
         });
 
