@@ -8,6 +8,9 @@ import java.io.File
 import java.io.FileReader
 import java.nio.file.Paths
 
+/**
+ * 解析lint xml文件
+ */
 class LintXmlParser(val file: File) {
 
     val factory = XmlPullParserFactory.newInstance()

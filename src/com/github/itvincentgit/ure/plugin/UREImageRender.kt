@@ -8,7 +8,9 @@ import java.io.FileInputStream
 import javax.imageio.ImageIO
 import javax.swing.*
 
-
+/**
+ * 列表每行的render
+ */
 class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
     private val icon = JLabel()
     private val name = JLabel()
