@@ -1,12 +1,14 @@
 package com.github.itvincentgit.ure.plugin;
 
-import com.github.itvincentgit.ure.lint.LintXmlParser;
+import com.github.itvincentgit.ure.lint.LintDomParser;
 import com.github.itvincentgit.ure.util.ErrorUtil;
 import com.github.itvincentgit.ure.util.SysUtil;
-import com.intellij.openapi.application.Application;
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
@@ -18,13 +20,11 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * 接入toolwindow面板
@@ -78,8 +78,11 @@ public class UREToolWindowFactory implements ToolWindowFactory {
                 //选择一个文件来解析
                 try {
                     DefaultListModel listModel = new DefaultListModel();
-                    LintXmlParser parser = new LintXmlParser(
+                    /*LintXmlParser parser = new LintXmlParser(
                             new File(virtualFiles.get(0).getPath()));
+                    parser.parse();
+                    parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));*/
+                    LintDomParser parser = new LintDomParser(new File(virtualFiles.get(0).getPath()));
                     parser.parse();
                     parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));
 
@@ -110,5 +113,8 @@ public class UREToolWindowFactory implements ToolWindowFactory {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(mToolWindowPanel, "", false);
         toolWindow.getContentManager().addContent(content);
+
+        IdeaPluginDescriptor plugin = PluginManager.getPlugin(PluginId.getId("com.github.itvincentgit.unused-resource-explorer"));
+        System.out.println("Plugin version:" + plugin.getVersion());
     }
 }
