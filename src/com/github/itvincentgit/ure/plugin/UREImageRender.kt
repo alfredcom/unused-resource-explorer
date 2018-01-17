@@ -32,6 +32,8 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
                     icon.icon = ImageIcon(getScaledImage(it.path, 50, 50))
                 } catch (e: Exception) {
                 }
+            } else {
+                icon.icon = null
             }
         }
 
