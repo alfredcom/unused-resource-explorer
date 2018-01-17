@@ -13,7 +13,7 @@ import java.nio.file.Paths
  */
 class LintXmlParser(val file: File) {
 
-    val factory = XmlPullParserFactory.newInstance()
+    val factory = XmlPullParserFactory.newInstance("org.xmlpull.mxp1.MXParserFactory", null)
     val xmlPullParser = factory.newPullParser()
     var unusedImages:ArrayList<UREImage> = ArrayList<UREImage>()
 
@@ -40,7 +40,7 @@ class LintXmlParser(val file: File) {
                     } else if (nodeName == "location" && inUnusedResources) {
                         var filePath = xmlPullParser.getAttributeValue(null, "file")
                         println("filePath = " + filePath)
-                        unusedImages?.add(UREImage(getFileName(filePath), filePath))
+                        unusedImages.add(UREImage(getFileName(filePath), filePath))
                     }
                 }
                 XmlPullParser.END_TAG -> {

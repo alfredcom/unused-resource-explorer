@@ -75,20 +75,21 @@ public class UREToolWindowFactory implements ToolWindowFactory {
             FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor("xml");
             FileChooser.chooseFiles(descriptor, project, null, virtualFiles -> {
                 System.out.println("choose file " + virtualFiles);
-                DefaultListModel listModel = new DefaultListModel();
                 //选择一个文件来解析
                 try {
+                    DefaultListModel listModel = new DefaultListModel();
                     LintXmlParser parser = new LintXmlParser(
                             new File(virtualFiles.get(0).getPath()));
                     parser.parse();
                     parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));
+
+                    //显示在列表上
+                    mResouceList.setModel(listModel);
+                    mResouceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+                    mResouceList.setCellRenderer(new UREImageRender());
                 } catch (Exception e12) {
                     ErrorUtil.INSTANCE.showError(e12);
                 }
-                //显示在列表上
-                mResouceList.setModel(listModel);
-                mResouceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-                mResouceList.setCellRenderer(new UREImageRender());
             });
         });
 
