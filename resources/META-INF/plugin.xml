@@ -33,7 +33,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <toolWindow id="Unused Resource Explorer"
                 secondary="true"
-                icon="/images/icon1.png"
+                icon="/images/saoba.png"
                 anchor="right"
                 factoryClass="com.github.itvincentgit.ure.plugin.UREToolWindowFactory"/>
   </extensions>
