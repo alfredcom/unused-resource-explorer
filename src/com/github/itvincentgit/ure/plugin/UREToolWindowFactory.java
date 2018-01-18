@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.function.Predicate;
 
 /**
  * 接入toolwindow面板
@@ -61,7 +62,9 @@ public class UREToolWindowFactory implements ToolWindowFactory {
                     DefaultListModel listModel = new DefaultListModel();
                     LintDomParser parser = new LintDomParser(new File(virtualFiles.get(0).getPath()));
                     parser.parse();
-                    parser.getUnusedImages().stream().forEach(ureImage -> listModel.addElement(ureImage));
+                    parser.getUnusedImages().stream()
+                            .filter(ureImage -> IgnoreResource.INSTANCE.filterResource(ureImage.getPath()))
+                            .forEach(ureImage -> listModel.addElement(ureImage));
 
                     //显示在列表上
                     mResouceList.setModel(listModel);
