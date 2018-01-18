@@ -1,9 +1,9 @@
 package com.github.itvincentgit.ure.lint
 
 import com.github.itvincentgit.ure.plugin.UREImage
+import com.github.itvincentgit.ure.util.FileUtil
 import org.w3c.dom.Element
 import java.io.File
-import java.nio.file.Paths
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
@@ -27,13 +27,10 @@ class LintDomParser(val file: File) {
                     val location = (locationList.item(j)) as Element
                     val filePath = location.getAttribute("file")
                     println("filePath = " + filePath)
-                    unusedImages.add(UREImage(getFileName(filePath), filePath))
+                    unusedImages.add(UREImage(FileUtil.getFileName(filePath), filePath))
                 }
             }
         }
     }
 
-    fun getFileName(path: String) : String{
-        return Paths.get(path).fileName.toString()
-    }
 }
