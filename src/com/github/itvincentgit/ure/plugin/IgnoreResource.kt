@@ -9,6 +9,7 @@ object IgnoreResource {
 
     fun filterResource(str: String) : Boolean{
         if (FileUtil.isChildOf(str, "values")) return false//过滤values目录
+        if (FileUtil.isChildOf(str, "dimens")) return false//过滤values目录
         return true
     }
 }
