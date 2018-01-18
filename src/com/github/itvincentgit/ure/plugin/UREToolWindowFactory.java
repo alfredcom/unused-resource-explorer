@@ -55,7 +55,7 @@ public class UREToolWindowFactory implements ToolWindowFactory {
         //点击按钮选择lint.xml文件
         chooseLintReportButton.addActionListener(e -> {
             FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor("xml");
-            FileChooser.chooseFiles(descriptor, project, null, virtualFiles -> {
+            FileChooser.chooseFiles(descriptor, project, project.getBaseDir(), virtualFiles -> {
                 System.out.println("choose file " + virtualFiles);
                 //选择一个文件来解析
                 try {
