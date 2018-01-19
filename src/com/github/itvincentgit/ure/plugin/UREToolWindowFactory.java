@@ -40,6 +40,7 @@ public class UREToolWindowFactory implements ToolWindowFactory {
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         mToolWindow = toolWindow;
 
+        //删除单个文件
         mDelBtn.addActionListener(e -> {
                 //Messages.showOkCancelDialog("Delete these files?", "Ask", Messages.getQuestionIcon())
             mResouceList.getSelectedValuesList().stream().forEach(o -> {
@@ -73,14 +74,14 @@ public class UREToolWindowFactory implements ToolWindowFactory {
             });
         });
 
+        //打开文件
         mOpenBtn.addActionListener(e -> {
             mResouceList.getSelectedValuesList().stream().forEach(o -> {
                 //打开列表选择的文件
                 String path = ((UREImage) o).getPath();
                 System.out.println("Open file: " + path);
                 try {
-                    if (SysUtil.INSTANCE.isWindow())
-                        Runtime.getRuntime().exec("explorer.exe " + path);
+                    FileUtil.INSTANCE.openFile(project, new File(path));
                 } catch (Exception e1) {
                     ErrorUtil.INSTANCE.showError(e1);
                 }

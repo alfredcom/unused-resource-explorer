@@ -1,6 +1,9 @@
 package com.github.itvincentgit.ure.util
 
+import com.intellij.openapi.fileEditor.OpenFileDescriptor
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
 import java.io.File
 import java.nio.file.Paths
 
@@ -22,5 +25,11 @@ object FileUtil {
     fun deleteVirtualFile(f: File, requestor: Object) {
         val virtualFile = LocalFileSystem.getInstance().findFileByIoFile(f);
         virtualFile?.delete(requestor);
+    }
+
+    fun openFile(project: Project, file: File) {
+        LocalFileSystem.getInstance().findFileByIoFile(file)?.apply {
+            OpenFileDescriptor(project, this).navigate(true)
+        }
     }
 }
