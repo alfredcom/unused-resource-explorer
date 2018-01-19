@@ -20,6 +20,7 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
     val xmlFileImageIcon = ImageIcon(javaClass.getResource("/images/xml-file.png"))
 
     init {
+        layout = FlowLayout(FlowLayout.LEFT)
         val panelText = JPanel(GridLayout(0, 1))
         panelText.add(name)
         panelText.add(path)
@@ -34,7 +35,7 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
                 try {
                     var f = File(it.path)
                     if (f.exists()) {
-                        icon.icon = ImageIcon(getScaledImage(f, 50, 50))
+                        icon.icon = ImageIcon(getScaledImage(f, 30, 30))
                     } else {
                         icon.icon = noFileImageIcon
                     }
