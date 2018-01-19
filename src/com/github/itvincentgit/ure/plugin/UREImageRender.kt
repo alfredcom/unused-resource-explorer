@@ -4,6 +4,7 @@ import com.intellij.util.ui.UIUtil
 import java.awt.*
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
+import java.io.File
 import java.io.FileInputStream
 import javax.imageio.ImageIO
 import javax.swing.*
@@ -12,9 +13,11 @@ import javax.swing.*
  * 列表每行的render
  */
 class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
-    private val icon = JLabel()
-    private val name = JLabel()
-    private val path = JLabel()
+    val icon = JLabel()
+    val name = JLabel()
+    val path = JLabel()
+    val noFileImageIcon = ImageIcon(javaClass.getResource("/images/no-file.png"))
+    val xmlFileImageIcon = ImageIcon(javaClass.getResource("/images/xml-file.png"))
 
     init {
         val panelText = JPanel(GridLayout(0, 1))
@@ -29,19 +32,24 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
         value?.let {
             if (it.isImage()) {
                 try {
-                    icon.icon = ImageIcon(getScaledImage(it.path, 50, 50))
+                    var f = File(it.path)
+                    if (f.exists()) {
+                        icon.icon = ImageIcon(getScaledImage(f, 50, 50))
+                    } else {
+                        icon.icon = noFileImageIcon
+                    }
                 } catch (e: Exception) {
                 }
             } else {
-                icon.icon = null
+                icon.icon = xmlFileImageIcon
             }
         }
 
         icon.isOpaque = true
-        value.let {
-            name.text = it?.name
+        value?.let {
+            name.text = it.name
             name.isOpaque = true
-            path.text = it?.path
+            path.text = it.path
             path.isOpaque = true
             path.foreground = Color.blue
         }
@@ -61,7 +69,7 @@ class UREImageRender : JPanel(), ListCellRenderer<UREImage> {
     }
 
     // 取到缩放后的图
-    private fun getScaledImage(path: String, w: Int, h: Int): Image {
+    private fun getScaledImage(path: File, w: Int, h: Int): Image {
         val srcImg = ImageIO.read(FileInputStream(path))
 
         val resizedImg = UIUtil.createImage(w, h, BufferedImage.TYPE_INT_ARGB)
