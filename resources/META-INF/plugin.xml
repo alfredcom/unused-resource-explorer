@@ -6,10 +6,13 @@
 
   <description><![CDATA[
       Show the unused resouce from the lint xml file<br>
+      <li>delete the selected file</li>
+      <li>open the selected file</li>
+      <li>clean the unused file</li>
     ]]></description>
 
   <change-notes><![CDATA[
-      1.0.0 first release<br>
+      1.0.0 Release<br>
     ]]>
   </change-notes>
 
